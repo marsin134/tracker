@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"tracker/internal/config"
 	"tracker/internal/database"
+	"tracker/internal/repository"
 )
 
 //TIP To run your code, right-click the code and select <b>Run</b>. Alternatively, click
@@ -23,7 +25,16 @@ func main() {
 	}
 	defer db.Close()
 
-	fmt.Println(db)
+	repo, err := repository.NewRepository(db)
+	if err != nil {
+		logger.Errorf("Failed to create repo: %v", err)
+	}
+
+	ctx := context.Background()
+
+	err = repo.User.DeleteUser(ctx, "4403e218-740e-46cb-afe5-c5dbff5a4ddc")
+
+	fmt.Println("GOOD")
 }
 
 //TIP See GoLand help at <a href="https://www.jetbrains.com/help/go/">jetbrains.com/help/go/</a>.
