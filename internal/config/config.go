@@ -2,6 +2,7 @@ package config
 
 import (
 	"bufio"
+	"github.com/sirupsen/logrus"
 	"os"
 	"strconv"
 	"strings"
@@ -60,7 +61,7 @@ func LoadDB() DB {
 		DbPort:    getEnv("DB_PORT", "5432"),
 		DbUser:    getEnv("DB_USER", "postgres"),
 		DbPass:    getEnv("DB_PASSWORD", "123"),
-		DbName:    getEnv("DB_NAME", "dailyPlanner"),
+		DbName:    getEnv("DB_NAME", "tracker"),
 		DbSSLMode: getEnv("DB_SSL_MODE", "disable"),
 	}
 }
@@ -68,7 +69,7 @@ func LoadDB() DB {
 func LoadToken() TokenConfig {
 	return TokenConfig{
 		JWTSecret:            getEnv("JWT_SECRET_KEY", ""),
-		AccessTokenDuration:  getEnvDuration("ACCESS_TOKEN_DURATION", time.Hour),
+		AccessTokenDuration:  getEnvDuration("ACCESS_TOKEN_DURATION", 2*time.Hour),
 		RefreshTokenDuration: getEnvDuration("REFRESH_TOKEN_DURATION", 168*time.Hour),
 	}
 }
@@ -114,4 +115,12 @@ func LoadEnvFile(filename string) error {
 	}
 
 	return scanner.Err()
+}
+
+func SetupLogger() *logrus.Logger {
+	logger := logrus.New()
+	logger.SetFormatter(&logrus.TextFormatter{
+		ForceColors: true,
+	})
+	return logger
 }
