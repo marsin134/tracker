@@ -37,6 +37,17 @@ func (r UserRepository) GetUserById(ctx context.Context, id string) (*models.Use
 	return &user, nil
 }
 
+func (r UserRepository) GetUserByUsername(ctx context.Context, username string) (*models.User, error) {
+	query := `SELECT * FROM users WHERE username=$1`
+
+	var user models.User
+	err := r.db.GetContext(ctx, &user, query, username)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
 func (r UserRepository) DeleteUser(ctx context.Context, id string) error {
 	query := `DELETE FROM users WHERE user_id=$1`
 
