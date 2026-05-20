@@ -15,8 +15,8 @@ func NewRoutePointsRepository(db *database.DB) *RoutePointsRepository {
 }
 
 func (r RoutePointsRepository) CreatePoint(ctx context.Context, point *models.RoutePoints) (*int64, error) {
-	query := `INSERT INTO route_points (id, route_id, latitude, longitude, created_at)
-	VALUES (:id, :route_id, :latitude, :longitude, :created_at)`
+	query := `INSERT INTO route_points (route_id, latitude, longitude, created_at)
+	VALUES (:route_id, :latitude, :longitude, :created_at)`
 
 	_, err := r.db.NamedExecContext(ctx, query, point)
 	if err != nil {
@@ -54,4 +54,15 @@ func (r RoutePointsRepository) DeletePoint(ctx context.Context, id int64) error 
 		return err
 	}
 	return nil
+}
+
+func (r RoutePointsRepository) GetLastTwoPoints(ctx context.Context, routeId string) (*[]models.RoutePoints, error) {
+	query := `SELECT * FROM route_points WHERE route_id=$1 ORDER BY id DESC LIMIT 2`
+	var points []models.RoutePoints
+
+	err := r.db.SelectContext(ctx, &points, query, routeId)
+	if err != nil {
+		return nil, err
+	}
+	return &points, nil
 }
