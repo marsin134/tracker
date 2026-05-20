@@ -46,7 +46,7 @@ func (r UserRepository) GetUserById(ctx context.Context, id string) (*models.Use
 }
 
 func (r UserRepository) GetUserByUsername(ctx context.Context, username string) (*models.User, error) {
-	query := `SELECT * FROM users WHERE username=$1`
+	query := `SELECT * FROM users WHERE user_name=$1`
 
 	var user models.User
 	err := r.db.GetContext(ctx, &user, query, username)

@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"tracker/internal/config"
 	"tracker/internal/database"
+	"tracker/internal/repository"
+	"tracker/internal/service"
 )
 
 //TIP To run your code, right-click the code and select <b>Run</b>. Alternatively, click
@@ -23,62 +26,25 @@ func main() {
 	}
 	defer db.Close()
 
-	//repo, err := repository.NewRepository(db)
-	//if err != nil {
-	//	logger.Errorf("Failed to create repo: %v", err)
-	//}
+	repo, err := repository.NewRepository(db)
+	if err != nil {
+		logger.Errorf("Failed to create repo: %v", err)
+	}
 
-	//user := models.User{
-	//	Id:               "521ce7f0-323c-4b12-a0b1-095b2221d5d6",
-	//	Name:             "",
-	//	PasswordHash:     "",
-	//	AccessToken:      "",
-	//	RefreshTokenHash: "",
-	//}
-	//
-	//route := models.Route{
-	//	Id:           "521ce7f0-323c-4b12-a0b1-095b2221d5d6",
-	//	UserId:       user.Id,
-	//	Speed:        0,
-	//	AverageSpeed: 0,
-	//	Way:          0,
-	//}
+	ctx := context.Background()
 
-	//point := models.RoutePoints{
-	//	RouteId:   "521ce7f0-323c-4b12-a0b1-095b2221d5d6",
-	//	Latitude:  0,
-	//	Longitude: 0,
-	//	CreatedAt: time.Now(),
-	//}
-	//
-	//ctx := context.Background()
+	serv := service.NewService(repo, &cfg)
 
-	//idUser, err := repo.User.CreateUser(ctx, &user)
-	//if err != nil {
-	//	logger.Errorf("Failed to create user: %v", err)
-	//}
-	//fmt.Printf("User created: %v", idUser)
-	//
-	//idRoute, err := repo.Route.CreateRoute(ctx, &route)
-	//if err != nil {
-	//	logger.Errorf("Failed to create route: %v", err)
-	//}
-	//fmt.Printf("Route created: %v", idRoute)
+	req := service.UserRequest{
+		Username: "name",
+		Password: "password",
+	}
 
-	//for i := 0; i < 5; i++ {
-	//	id, err := repo.RoutePoint.CreatePoint(ctx, &point)
-	//	if err != nil {
-	//		logger.Errorf("Failed to create point: %v", err)
-	//	}
-	//	fmt.Printf("Created point ID: %d\n", id)
-	//}
-	//
-	//points, err := repo.RoutePoint.GetLastTwoPoints(ctx, point.RouteId)
-	//if err != nil {
-	//	logger.Errorf("Failed to get last two points: %v", err)
-	//}
-	//fmt.Printf("Last two points: %v\n", *points)
-
+	resp, err := serv.User.Register(ctx, req)
+	if err != nil {
+		logger.Errorf("Failed to register user: %v", err)
+	}
+	fmt.Println(resp)
 	fmt.Println("GOOD")
 }
 
