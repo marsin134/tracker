@@ -10,6 +10,7 @@ type UserRepo interface {
 	CreateUser(ctx context.Context, user *models.User) (*string, error)
 	GetUserById(ctx context.Context, id string) (*models.User, error)
 	GetUserByUsername(ctx context.Context, username string) (*models.User, error)
+	UpdateRefreshToken(ctx context.Context, req UpdateUserRefreshRequest) error
 	DeleteUser(ctx context.Context, id string) error
 }
 
