@@ -25,6 +25,7 @@ type RoutePointsRepo interface {
 	GetPointById(ctx context.Context, id int64) (*models.RoutePoints, error)
 	GetRoutePoints(ctx context.Context, routeId string) (*[]models.RoutePoints, error)
 	DeletePoint(ctx context.Context, id int64) error
+	GetLastTwoPoints(ctx context.Context, routeId string) (*[]models.RoutePoints, error)
 }
 
 type Repository struct {

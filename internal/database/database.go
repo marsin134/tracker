@@ -85,3 +85,4 @@ func (db *DB) GetDB() *DB {
 }
 
 // psql -h localhost -U postgres -d tracker -f migrations/001_create_users.sql
+// ALTER SEQUENCE route_points_id_seq RESTART WITH 0;
