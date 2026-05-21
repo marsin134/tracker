@@ -35,7 +35,7 @@ type UserResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-func (svc userService) Register(ctx context.Context, req UserRequest) (*UserResponse, error) {
+func (svc userService) Register(ctx context.Context, req *UserRequest) (*UserResponse, error) {
 	user, err := svc.repo.User.GetUserByUsername(ctx, req.Username)
 	if err == nil && user != nil { // login user
 		responseUser, err := svc.Login(ctx, req)
@@ -84,7 +84,7 @@ func (svc userService) Register(ctx context.Context, req UserRequest) (*UserResp
 
 }
 
-func (svc userService) Login(ctx context.Context, req UserRequest) (*UserResponse, error) {
+func (svc userService) Login(ctx context.Context, req *UserRequest) (*UserResponse, error) {
 	user, err := svc.repo.User.GetUserByUsername(ctx, req.Username)
 	if err != nil {
 		return nil, fmt.Errorf("error when getting user by username: %w", err)
