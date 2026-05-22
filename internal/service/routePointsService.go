@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"time"
 	"tracker/internal/models"
 	"tracker/internal/repository"
 )
@@ -15,6 +16,7 @@ func NewRoutePointsService(repo *repository.Repository) *routePointsService {
 }
 
 func (svc routePointsService) CreatePoint(ctx context.Context, point *models.RoutePoints) (*int64, error) {
+	point.CreatedAt = time.Now()
 	id, err := svc.repo.RoutePoint.CreatePoint(ctx, point)
 	if err != nil {
 		return nil, err

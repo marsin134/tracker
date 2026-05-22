@@ -9,10 +9,10 @@ import (
 )
 
 type routeService struct {
-	repo repository.Repository
+	repo *repository.Repository
 }
 
-func NewRouteService(repo repository.Repository) *routeService {
+func NewRouteService(repo *repository.Repository) *routeService {
 	return &routeService{repo: repo}
 }
 
@@ -59,18 +59,25 @@ func (svc routeService) UpdateRoute(ctx context.Context, routeId string) (*model
 		return nil, err
 	}
 
-	quantity, err := svc.GetUserRoutes(ctx, route.UserId)
+	quantity, err := svc.repo.RoutePoint.GetRoutePoints(ctx, routeId)
 	if err != nil {
 		return nil, err
 	}
 
+	countSpeeds := len(*quantity) - 1
+
 	pathTraveled := svc.calculatingMovement(*lastPoints)
 	speed := svc.calculatingSpeed(pathTraveled, *lastPoints)
-	averageSpeed := svc.calculatingAverageSpeed(route.AverageSpeed, speed, len(*quantity))
+	averageSpeed := svc.calculatingAverageSpeed(route.AverageSpeed, speed, countSpeeds)
 
 	route.Speed = speed
 	route.AverageSpeed = averageSpeed
-	route.Way = pathTraveled
+	route.Way += pathTraveled
+
+	_, err = svc.repo.Route.UpdateRoute(ctx, route)
+	if err != nil {
+		return nil, err
+	}
 	return route, nil
 }
 

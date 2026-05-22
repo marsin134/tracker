@@ -1,12 +1,9 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"tracker/internal/config"
 	"tracker/internal/database"
-	"tracker/internal/repository"
-	"tracker/internal/service"
 )
 
 //TIP To run your code, right-click the code and select <b>Run</b>. Alternatively, click
@@ -26,25 +23,27 @@ func main() {
 	}
 	defer db.Close()
 
-	repo, err := repository.NewRepository(db)
-	if err != nil {
-		logger.Errorf("Failed to create repo: %v", err)
-	}
-
-	ctx := context.Background()
-
-	serv := service.NewService(repo, &cfg)
-
-	req := service.UserRequest{
-		Username: "name",
-		Password: "password",
-	}
-
-	resp, err := serv.User.Register(ctx, req)
-	if err != nil {
-		logger.Errorf("Failed to register user: %v", err)
-	}
-	fmt.Println(resp)
+	//repo, err := repository.NewRepository(db)
+	//if err != nil {
+	//	logger.Errorf("Failed to create repo: %v", err)
+	//}
+	//
+	//ctx := context.Background()
+	//
+	//serv := service.NewService(repo, &cfg)
+	//
+	//point := &models.RoutePoints{
+	//	RouteId:   "4eefafdb-b6a0-425e-867a-091f87eb616b",
+	//	Latitude:  53.211933,
+	//	Longitude: 44.969086,
+	//}
+	//
+	//_, err = serv.RoutePoint.CreatePoint(ctx, point)
+	//route, err := serv.Route.UpdateRoute(ctx, "4eefafdb-b6a0-425e-867a-091f87eb616b")
+	//if err != nil {
+	//	logger.Errorf("Failed to create route: %v", err)
+	//}
+	//fmt.Println(route)
 	fmt.Println("GOOD")
 }
 
