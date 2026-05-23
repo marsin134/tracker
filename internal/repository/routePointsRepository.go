@@ -22,7 +22,16 @@ func (r RoutePointsRepository) CreatePoint(ctx context.Context, point *models.Ro
 	if err != nil {
 		return nil, err
 	}
-	return &point.Id, nil
+
+	query = `SELECT * FROM route_points WHERE route_id=$1 ORDER BY id DESC LIMIT 1`
+
+	var points []models.RoutePoints
+	err = r.db.SelectContext(ctx, &points, query, point.RouteId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &points[0].Id, nil
 }
 
 func (r RoutePointsRepository) GetPointById(ctx context.Context, id int64) (*models.RoutePoints, error) {
