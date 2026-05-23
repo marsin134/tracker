@@ -16,7 +16,7 @@ type RoutePointRequest struct {
 }
 
 func (h Handler) CreatePoint(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
+	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
@@ -51,7 +51,7 @@ func (h Handler) CreatePoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) GetPoint(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
+	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
@@ -77,7 +77,7 @@ func (h Handler) GetPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) GetRoutePoints(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
+	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
@@ -96,7 +96,7 @@ func (h Handler) GetRoutePoints(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) GetLastTwoPoints(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
+	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
@@ -115,7 +115,7 @@ func (h Handler) GetLastTwoPoints(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) DeletePoint(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodDelete {
+	if r.Method != http.MethodDelete {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}

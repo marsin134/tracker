@@ -32,7 +32,7 @@ func (h Handler) CreateRoute(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(MessageResponse{Message: message})
 }
 
-func (h Handler) GerRoute(w http.ResponseWriter, r *http.Request) {
+func (h Handler) GetRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -40,6 +40,8 @@ func (h Handler) GerRoute(w http.ResponseWriter, r *http.Request) {
 
 	pathParts := strings.Split(r.URL.Path, "/")
 	routeId := pathParts[len(pathParts)-1]
+
+	fmt.Println(routeId)
 
 	route, err := h.service.Route.GetRoute(r.Context(), routeId)
 	if err != nil {

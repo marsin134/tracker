@@ -12,7 +12,7 @@ type Handler struct {
 	Validate *validator.Validate
 }
 
-func NewHandler(service *service.Service, cfg *config.Config, validate *validator.Validate) *Handler {
+func NewHandler(service *service.Service, cfg *config.Config) *Handler {
 	return &Handler{
 		service:  service,
 		cfg:      cfg,

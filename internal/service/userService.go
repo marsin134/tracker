@@ -25,8 +25,8 @@ func NewUserService(repo *repository.Repository, cfg *config.Config) *userServic
 }
 
 type UserRequest struct {
-	Username string
-	Password string
+	Username string `json:"user_name"`
+	Password string `json:"password"`
 }
 
 type UserResponse struct {
@@ -162,9 +162,9 @@ func (svc userService) DeleteUser(ctx context.Context, userId string) error {
 
 func (svc userService) generateAccessToken(id string) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id": id,
-		"exp":     time.Now().Add(svc.cfg.Token.AccessTokenDuration).Unix(),
-		"iat":     time.Now().Unix(),
+		"userId": id,
+		"exp":    time.Now().Add(svc.cfg.Token.AccessTokenDuration).Unix(),
+		"iat":    time.Now().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

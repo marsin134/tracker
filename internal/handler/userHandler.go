@@ -102,7 +102,7 @@ func (h Handler) GetUserByUsername(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) UpdateRefreshToken(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
+	if r.Method != http.MethodPut {
 		WriteErrorResponse(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}

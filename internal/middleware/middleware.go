@@ -2,13 +2,13 @@ package middleware
 
 import (
 	"context"
-	"dailyPlanner/internal/config"
-	"dailyPlanner/internal/handler"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"net/http"
 	"strings"
+	"tracker/internal/config"
+	"tracker/internal/handler"
 )
 
 // AuthMiddleware verifies the JWT token and adds user data to the context
@@ -19,7 +19,6 @@ func AuthMiddleware(cfg *config.Config) func(http.Handler) http.Handler {
 			publicPaths := []string{
 				"/api/auth/register",
 				"/api/auth/login",
-				"/api/auth/refresh-token",
 				"/",
 			}
 
@@ -67,7 +66,7 @@ func AuthMiddleware(cfg *config.Config) func(http.Handler) http.Handler {
 
 			// Extracting claims
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				sessionID, ok := claims["session_id"].(string)
+				userId, ok := claims["userId"].(string)
 
 				if !ok {
 					handler.WriteErrorResponse(w, "Incorrect data in the token", http.StatusUnauthorized)
@@ -76,7 +75,7 @@ func AuthMiddleware(cfg *config.Config) func(http.Handler) http.Handler {
 
 				// Adding user data to the context
 				ctx := r.Context()
-				ctx = context.WithValue(ctx, "sessionId", sessionID)
+				ctx = context.WithValue(ctx, "userId", userId)
 				// Passing the updated context on
 				next.ServeHTTP(w, r.WithContext(ctx))
 			} else {
